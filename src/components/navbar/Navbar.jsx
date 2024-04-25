@@ -21,7 +21,7 @@ const [menu, setMenu] = React.useState("Home")
             <img src={assets.basket_icon} alt='basket' />
             <div className='Dot'></div >
         </div>
-        <button onClick={()=>setShowlogin(true)}>sign</button>
+        <button onClick={()=>setShowlogin(true)}>sign-in</button>
        </div>
     </div>
   )
