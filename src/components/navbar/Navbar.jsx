@@ -8,7 +8,7 @@ const [menu, setMenu] = React.useState("Home")
 
   return (
     <div className='navbar'> 
-       <img src={assets.logo}  alt='logo' className='logo'/>
+       <Link to="/"><img src={assets.logo}  alt='logo' className='logo'/></Link>
        <ul className='navbar-menu'>
             <li> <Link to="/" onClick={() => setMenu("Home")} className={menu === "Home" ? "active" : ""}>Home</Link></li>
             <a  href='#explore-menu'><li onClick={()=>{setMenu("Menu")}} className={menu==="Menu"?"active":""}>Menu</li></a>
@@ -18,7 +18,7 @@ const [menu, setMenu] = React.useState("Home")
        <div className='navbar-right'>
         <img src={assets.search_icon} alt='search' />
         <div className='navbar-search-icon'>
-            <img src={assets.basket_icon} alt='basket' />
+            <Link to="/cart"><img src={assets.basket_icon} alt='basket' /></Link>
             <div className='Dot'></div >
         </div>
         <button onClick={()=>setShowlogin(true)}>sign-in</button>
