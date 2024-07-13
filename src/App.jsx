@@ -1,4 +1,4 @@
-import React from 'react' 
+import React, { useState } from 'react' 
 import Navbar from './components/navbar/Navbar' 
 import { Route, Routes } from 'react-router-dom'
 import Home from './pages/home/home'
@@ -8,7 +8,7 @@ import Footer from './components/footer/footer'
 import Loginpopup from './components/login/login'
 
 function App() {
-  const[showlogin, setShowlogin] = React.useState(false)
+  const[showlogin, setShowlogin] = useState(false)
   return (
     <>
     {showlogin?<Loginpopup  setShowlogin={setShowlogin}/>:<></>}
