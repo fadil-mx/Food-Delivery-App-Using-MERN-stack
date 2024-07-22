@@ -15,6 +15,9 @@ const loginuser = async (req, res) => {
      return  res.json({ success: false, message: "password is incorrect" });
     }
     const token = createtoken(cheakmail._id);
+    res.cookie("token", token, {
+      httpOnly: true,
+    });
     res.json({ success: true, token: token});
   } catch (error) {
     console.log(error);
@@ -23,7 +26,7 @@ const loginuser = async (req, res) => {
 };
 
 const createtoken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET);
+  return jwt.sign({ id }, process.env.JWT_SECRET,);
 };
 
 const registeruser = async (req, res) => {
@@ -40,8 +43,8 @@ const registeruser = async (req, res) => {
     }
     if (password.length < 8) {
       return res.json({
-        success: "false",
-        message: "password should be atleast 8 characters",
+        success: false,
+        message: "Password should be at least 8 characters",
       });
     }
 
@@ -63,4 +66,34 @@ const registeruser = async (req, res) => {
   }
 };
 
-export { loginuser, registeruser };
+
+const cookiedelete=async (req, res) => {
+  res.clearCookie('token', {
+    httpOnly: true,
+  });
+  res.json({ success: true, message: 'Logged out' });
+};
+
+
+const authenticateToken = (req, res, next) => {
+  const token = req.cookies.token;
+
+  if (!token) {
+    return res.status(401).json({ success: false, message: 'No token provided' });
+  }
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+    if (err) {
+      return res.status(403).json({ success: false, message: 'Invalid token' });
+    }
+    req.user = user;
+    next();
+  });
+};
+
+
+
+
+
+
+export { loginuser, registeruser, authenticateToken,cookiedelete};

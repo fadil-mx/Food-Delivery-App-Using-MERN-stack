@@ -4,12 +4,30 @@ import { connectDB } from './config/db.js';
 import foodRouter from './routes/foodroute.js';
 import userrouter from './routes/userroute.js';
 import "dotenv/config";
+import cookieParser from 'cookie-parser';
+
+
 
 
 const app=express();
 
 app.use(express.json());
-app.use(cors());
+
+
+  const allowedOrigins = [
+    'http://localhost:5173', 
+    'http://localhost:5174' 
+  ];
+
+  app.use(cors({
+    origin: allowedOrigins,
+    credentials: true // This allows cookies to be sent and received
+  }));
+  
+
+app.use(cookieParser());
+app.use(express.urlencoded({extended:true}));
+
 
 connectDB();
 
@@ -24,6 +42,9 @@ app.use("/api/user",userrouter)
 app.get("/",(req,res)=>{
     res.send('server is ready');
 })
+
+
+
 
 app.listen(3000,()=>{
     console.log('server started at 3000');

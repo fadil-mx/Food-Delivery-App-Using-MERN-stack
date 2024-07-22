@@ -3,19 +3,32 @@ import './Navbar.css'
 import { assets } from '../../assets/assets'
 import { Link, useNavigate } from 'react-router-dom'
 import { storeContext } from '../../context/storeContext'
+import axios from "axios"
 
 function Navbar({ setShowlogin}) {
 const [menu, setMenu] = React.useState("Home")
 
 const {gettotal,token,settoken}=useContext(storeContext)
 
-const navigate=useNavigate
+const navigate=useNavigate()
 
-const logout=()=>{
-  localStorage.removeItem("token")
-  settoken("")
-  navigate("/")
-}
+// const logout=()=>{
+//   localStorage.removeItem("token")
+//   settoken("")
+//   navigate("/")
+// }
+
+
+const logout = async () => {
+  try {
+    await axios.post('http://localhost:3000/api/user/logout', {}, { withCredentials: true });
+    localStorage.removeItem("token");
+    settoken("");
+    navigate("/");
+  } catch (error) {
+    console.error("Error logging out", error);
+  }
+};
 
 
   return (
