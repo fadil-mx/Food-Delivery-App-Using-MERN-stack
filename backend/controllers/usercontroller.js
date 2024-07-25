@@ -3,18 +3,21 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import validator from "validator";
 
+
+
+
 const loginuser = async (req, res) => {
   const { email, password } = req.body;
   try {
-    const cheakmail = await usermodel.findOne({ email: email });
-    if (!cheakmail) {
+    const user = await usermodel.findOne({ email: email });
+    if (!user) {
       return res.json({ success: false, message: "user not found" });
     }
-    const cheakpassword = await bcrypt.compare(password, cheakmail.password);
+    const cheakpassword = await bcrypt.compare(password, user.password);
     if (!cheakpassword) {
      return  res.json({ success: false, message: "password is incorrect" });
     }
-    const token = createtoken(cheakmail._id);
+    const token = createtoken(user._id);
     res.cookie("token", token, {
       httpOnly: true,
     });
@@ -25,9 +28,17 @@ const loginuser = async (req, res) => {
   }
 };
 
+
+
+
+
 const createtoken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET,);
 };
+
+
+
+
 
 const registeruser = async (req, res) => {
   const { name, email, password } = req.body;
@@ -47,7 +58,6 @@ const registeruser = async (req, res) => {
         message: "Password should be at least 8 characters",
       });
     }
-
     //hashing password
     const salt = await bcrypt.genSalt(10);
     const hashpassword = await bcrypt.hash(password, salt);
@@ -67,6 +77,9 @@ const registeruser = async (req, res) => {
 };
 
 
+
+
+
 const cookiedelete=async (req, res) => {
   res.clearCookie('token', {
     httpOnly: true,
@@ -75,25 +88,8 @@ const cookiedelete=async (req, res) => {
 };
 
 
-const authenticateToken = (req, res, next) => {
-  const token = req.cookies.token;
-
-  if (!token) {
-    return res.status(401).json({ success: false, message: 'No token provided' });
-  }
-
-  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-    if (err) {
-      return res.status(403).json({ success: false, message: 'Invalid token' });
-    }
-    req.user = user;
-    next();
-  });
-};
 
 
 
 
-
-
-export { loginuser, registeruser, authenticateToken,cookiedelete};
+export { loginuser, registeruser, cookiedelete};

@@ -43,7 +43,7 @@ try{
   }
 }catch(error){
   console.error(error);
-  // res.json({sucess:false,message:"something went wrong"})
+  alert("Something went wrong");
 }
 }
 
