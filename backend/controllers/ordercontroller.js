@@ -89,6 +89,31 @@ const userorder=async(req,res)=>{
     res.json({success:false,message:"error occured in fetching"});
   }
 }
-export {verifyorder,userorder}
-  export default placeorder;
+
+//listing all orders for admin pannel
+
+const listorder=async(req,res)=>{
+ try {
+  const order=await ordermodel.find({});
+  res.json({success:true,order:order})
+ } catch (error) {
+  console.log(error);
+  res.json({success:false,message:"error occured in fetching order"});
+ }
+}
+
+//api for udpating order status
+const  updateorder=async(req,res)=>{
+  try {
+    await ordermodel.findByIdAndUpdate({_id:req.body.orderid},{$set:{status:req.body.status}})
+    res.json({success:true,message:"order status updated"})
+  } catch (error) {
+    console.log(error);
+    res.json({success:false,message:"error occured in updating order status"})
+  }
+}
+
+
+export {verifyorder,userorder,listorder,updateorder}
+export default placeorder;
   

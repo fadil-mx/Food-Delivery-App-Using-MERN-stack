@@ -13,7 +13,7 @@ const myorder = () => {
       const response = await axios.post(url + "/api/order/userorder", {}, { headers: { token } });
       if (response.data.success === true) {
         setOrderdata(response.data.order);
-        console.log(response.data.order);
+        // console.log(response.data.order);
       } else {
         alert("Error occurred");
       }
@@ -46,7 +46,7 @@ const myorder = () => {
                         <p>${order.amount}</p>
                         <p>items:{order.items.length}</p>
                         <p><span >&#x25cf;</span><b>{order.status}</b></p>
-                        <button>Track order</button>
+                        <button onClick={ getOrder} >Track order</button>
 
                     </div>
                 )
