@@ -21,7 +21,7 @@ const navigate=useNavigate()
 
 const logout = async () => {
   try {
-    await axios.post('http://localhost:3000/api/user/logout', {}, { withCredentials: true });
+    await axios.post('https://food-delivery-app-backend-7ynn.onrender.com/api/user/logout', {}, { withCredentials: true });
     localStorage.removeItem("token");
     settoken("");
     navigate("/");
