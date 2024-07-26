@@ -50,7 +50,7 @@ const logout = async () => {
         <div className="profile">
           <img src={assets.profile_icon} alt="profile" />
           <ul  className="nav-profile-dropdown">
-           <Link to="/order"> <li ><img src={assets.bag_icon}/><p>order</p></li></Link>
+           <Link to="/myorder"> <li ><img src={assets.bag_icon}/><p>order</p></li></Link>
             <hr/>
             <li onClick={logout}><img src={assets.logout_icon}/><p>Logout</p></li>
           </ul>

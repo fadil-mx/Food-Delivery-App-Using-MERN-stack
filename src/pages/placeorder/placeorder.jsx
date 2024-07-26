@@ -1,10 +1,24 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./placeorder.css";
 import axios from "axios";
 import { storeContext } from "../../context/storeContext";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const PlaceOrder = () => {
   const { gettotal, url, token, cartitem, food_list } = useContext(storeContext);
+  const navigate=useNavigate();
+
+  useEffect(() => {
+    if (gettotal() === 0) {
+      navigate("/cart");
+      toast.warning("Cart is empty");
+    }else if(!token){
+      navigate("/cart");
+      toast.warning("Please login to place an order")
+    }
+  },[])
+
 
   const [data, setdata] = useState({
     FullName: "",
@@ -18,6 +32,7 @@ const PlaceOrder = () => {
     PhoneNumber: "",
   });
 
+
   const changehandler = (event) => {
     const { name, value } = event.target;
     setdata((prev) => ({
@@ -28,6 +43,13 @@ const PlaceOrder = () => {
 
   const placeorder = async (event) => {
     event.preventDefault();
+
+
+    if (!token) {
+      toast.error("Please login to place an order");
+      return;
+    }
+
     let orderitems = [];
     food_list.map((item)=>{
       if(cartitem[item._id]>0){
@@ -89,7 +111,7 @@ const PlaceOrder = () => {
             <b>Total</b>
             <b>${gettotal() === 0 ? 0 : gettotal() + 2}</b>
           </div>
-          <button type="submit">PROCEED TO PAY</button>
+          <button type="submit" >PROCEED TO PAY</button>
         </div>
       </div>
     </form>

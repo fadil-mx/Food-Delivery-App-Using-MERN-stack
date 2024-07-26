@@ -63,9 +63,32 @@ const placeorder = async (req, res) => {
       res.json({ success: false, message: "Error occurred" });
     }
   };
-const  verifyorder=async(req,res)=>{}
-  
+const  verifyorder=async(req,res)=>{
 
-export {verifyorder}
+  const{orderid,success}=req.body;
+  try {
+    if(success==="true"){
+      await ordermodel.findByIdAndUpdate({_id:orderid},{$set:{payment:true}})
+      res.json({success:true,message:"orderplaced successfully"})
+    }else{
+      await ordermodel.findByIdAndDelete({_id:orderid});
+      res.json({success:false,message:"payment failed"})
+    }
+  } catch (error) {
+    console.log(error);
+    res.json({success:false,message:"error occured in payment"})
+  }
+}
+  //userorder for frount end
+const userorder=async(req,res)=>{
+  try {
+    const order=await ordermodel.find({userid:req.body.userId});
+    res.json({success:true,order:order})
+  } catch (error) {
+    console.log(error);
+    res.json({success:false,message:"error occured in fetching"});
+  }
+}
+export {verifyorder,userorder}
   export default placeorder;
   
