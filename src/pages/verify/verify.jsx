@@ -12,7 +12,7 @@ const verify = () => {
 
   const verifyorder = async () => {
     try {
-        const response=await axios.post("http://localhost:3000/api/order/verify",{success,orderid});
+        const response=await axios.post("https://food-delivery-app-backend-7ynn.onrender.com/api/order/verify",{success,orderid});
         if(response.data.success){
             navigate("/")
             
